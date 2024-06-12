@@ -19,31 +19,48 @@ function reducer(state: State, action: Action) {
     // state logic within the reducer. It helps me avoid this in components.
     if (state.fromLanguage === AUTO_LANGUAGE) return state;
 
+    const loading = state.fromText !== '';
+
     return {
       ...state,
+      loading,
+      result: '',
       fromLanguage: state.toLanguage,
       toLanguage: state.fromLanguage,
     };
   }
 
   if (type === 'SET_FROM_LANGUAGE') {
+    if (state.fromLanguage === action.payload) return state;
+
+    const loading = state.fromText !== '';
+
     return {
       ...state,
       fromLanguage: action.payload,
+      result: '',
+      loading,
     };
   }
 
   if (type === 'SET_TO_LANGUAGE') {
+    if (state.toLanguage === action.payload) return state;
+
+    const loading = state.fromText !== '';
+
     return {
       ...state,
       toLanguage: action.payload,
+      loading,
     };
   }
 
   if (type === 'SET_FROM_TEXT') {
+    const loading = action.payload !== '';
+
     return {
       ...state,
-      loading: true,
+      loading,
       fromText: action.payload,
       result: '',
     };
